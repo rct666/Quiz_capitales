@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu Quiz des Capitales du Monde</title>
+    <!-- Favicon et icône pour mobile -->
+    <link rel="icon" type="image/png" href="https://cdn.aptoide.com/imgs/e/3/2/e32cb8a752b3bd9e9aa35ae9e236ef3d_icon.png">
+    <link rel="apple-touch-icon" href="https://cdn.aptoide.com/imgs/e/3/2/e32cb8a752b3bd9e9aa35ae9e236ef3d_icon.png">
+    <meta name="theme-color" content="#0d1117">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Capitales Quiz">
+    <!-- Chargement de Tailwind CSS pour un style moderne et responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-white min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- En-tête du Quiz : Score, Restantes et Chronomètre -->
+        <header class="bg-gray-800 p-4 mb-8 rounded-xl shadow-lg neon-glow flex justify-between items-center flex-wrap">
+            <div class="flex items-center gap-3">
+                <img src="https://cdn.aptoide.com/imgs/e/3/2/e32cb8a752b3bd9e9aa35ae9e236ef3d_icon.png" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-lg">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-soft-blue">Capitales du Monde Quiz</h1>
+            </div>
+            <div class="flex space-x-6 items-center flex-wrap gap-4">
+                <!-- Affichage de la Progression : Correctes/Passées -->
+                <div class="text-center">
+                    <div id="progressDisplay" class="text-4xl font-mono text-soft-green">0/0</div>
+                    <div class="text-gray-400 text-sm">Correctes/Passées</div>
+                </div>
+                <!-- Compteur de Pays Restants -->
+                <div class="text-center">
+                    <div id="remainingDisplay" class="text-4xl font-mono text-yellow-400">0</div>
+                    <div class="text-gray-400 text-sm">Restantes</div>
+                </div>
+                <!-- Chronomètre -->
+                <div class="text-center">
+                    <div id="timerDisplay" class="text-4xl font-mono text-soft-blue">00:00</div>
+                    <div class="text-gray-400 text-sm">Chronomètre</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Zone de Jeu Principale -->
+        <main id="gameArea" class="bg-gray-800 p-6 rounded-xl shadow-2xl mb-8">
+            <div id="quizContent" class="text-center">
+                <p id="questionText" class="text-2xl md:text-4xl font-light mb-6 text-indigo-300">
+                    Chargement...
+                </p>
+
+                <div id="inputGroup" class="mb-6 flex flex-col items-center">
+                    <label for="capitalInput" class="text-xl mb-3 text-gray-300">Quelle est la capitale de ce pays ?</label>
+                    <input type="text" id="capitalInput" placeholder="Entrez la capitale ici"
+                           class="w-full max-w-sm p-3 text-lg rounded-lg bg-gray-700 border-2 border-indigo-500 focus:border-soft-blue focus:outline-none text-white placeholder-gray-400 transition-colors duration-300"
+                           autocomplete="off">
+                </div>
+
+                <div id="actionButtons" class="flex justify-center space-x-4 flex-wrap gap-2">
+                    <button id="submitButton"
+                            class="neon-button px-6 py-3 text-lg font-bold rounded-xl bg-soft-green text-white hover:bg-green-600">
+                        Valider
+                    </button>
+                    <button id="passButton"
+                            class="neon-button px-6 py-3 text-lg font-bold rounded-xl bg-yellow-600 text-white hover:bg-yellow-700">
+                        Passer (Mauvaise réponse)
+                    </button>
+                </div>
+
+                <!-- Zone de Feedback -->
+                <p id="feedback" class="mt-6 text-xl font-semibold min-h-[30px]"></p>
+            </div>
+
+            <!-- Écran de Fin de Jeu -->
+            <div id="gameOverScreen" class="hidden text-center p-8">
+                <h2 class="text-4xl font-bold text-soft-green mb-4">Quiz Terminé !</h2>
+                <p class="text-2xl text-gray-300 mb-6">
+                    Vous avez complété la liste des pays en : <span id="finalTime" class="font-mono text-soft-blue font-bold"></span>
+                </p>
+                <p class="text-2xl text-gray-300 mb-8">
+                    Votre score final est de : <span id="finalScore" class="font-mono text-soft-green font-bold"></span>
+                </p>
+                <button id="restartButton"
+                        class="neon-button px-8 py-4 text-xl font-bold rounded-xl bg-soft-indigo text-white hover:bg-indigo-700">
+                    Rejouer
+                </button>
+            </div>
+
+        </main>
+
+        <!-- Tableau des Pays Passés -->
+        <section class="bg-gray-800 p-6 rounded-xl shadow-lg neon-glow">
+            <h2 class="text-2xl font-semibold mb-4 text-soft-blue">Pays Passés</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full rounded-lg overflow-hidden">
+                    <thead class="table-header text-gray-200">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-sm font-medium">Pays</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium">Capitale</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="passedCountriesTableBody" class="divide-y divide-gray-700">
+                        <!-- Les lignes seront insérées ici par JavaScript -->
+                        <tr id="emptyRow"><td colspan="3" class="text-center py-4 text-gray-500">Aucun pays passé pour l'instant.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

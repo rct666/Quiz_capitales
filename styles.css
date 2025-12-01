@@ -1,0 +1,32 @@
+/* Configuration de la police Inter (standard) et du thème sombre */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0d1117; /* Fond très sombre */
+}
+
+/* Styles pour un effet "lumineux mais pas trop vif" */
+.neon-glow {
+    box-shadow: 0 0 5px #a78bfa, 0 0 10px #818cf8; /* Lumière violette/bleue douce */
+}
+
+.neon-button {
+    transition: all 0.2s ease;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.neon-button:hover {
+    box-shadow: 0 0 10px #38bdf8, 0 0 20px #a78bfa;
+    transform: translateY(-2px);
+}
+
+.table-header {
+    background-color: #1f2937; /* Gris foncé pour l'en-tête de tableau */
+}
+
+.table-row-even {
+    background-color: #111827; /* Très sombre pour les lignes paires */
+}
+
+.table-row-odd {
+    background-color: #1f2937; /* Gris foncé pour les lignes impaires */
+}
