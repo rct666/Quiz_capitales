@@ -455,7 +455,7 @@ function handlePass() {
     // Passer au pays suivant
     currentCountryIndex++;
     setTimeout(displayCurrentCountry, 2500);
-}}
+}
 
 /**
  * Termine le quiz et affiche les résultats.
