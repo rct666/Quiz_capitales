@@ -230,7 +230,8 @@ function normalizeString(str) {
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
-        .replace(/[-]/g, "") // Supprime les tirets uniquement
+        .replace(/[-–—]/g, "") // Supprime les tirets (trait d'union, en-dash, em-dash)
+        .replace(/['´`'']/g, "") // Supprime toutes les variantes d'apostrophes
         .replace(/\s+/g, "") // Supprime TOUS les espaces
         .trim();
 }
