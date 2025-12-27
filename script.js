@@ -7,7 +7,7 @@ const allCountriesAndCapitals = [
     { country: "Allemagne", capital: "Berlin", englishNames: ["Berlin"] },
     { country: "Andorre", capital: "Andorre-la-Vieille", englishNames: ["Andorra la Vella"] },
     { country: "Angola", capital: "Luanda", englishNames: ["Luanda"] },
-    { country: "Antigua-et-Barbuda", capital: "Saint John's", englishNames: ["Saint Johns"] },
+    { country: "Antigua-et-Barbuda", capital: "Saint John's", englishNames: ["Saint Johns", "Saint John's"] },
     { country: "Arabie saoudite", capital: "Riyad", englishNames: ["Riyadh"] },
     { country: "Argentine", capital: "Buenos Aires", englishNames: ["Buenos Aires"] },
     { country: "Arménie", capital: "Erevan", englishNames: ["Yerevan"] },
@@ -180,7 +180,7 @@ const allCountriesAndCapitals = [
     { country: "Timor oriental", capital: "Dili", englishNames: ["Dili"] },
     { country: "Togo", capital: "Lomé", englishNames: ["Lome"] },
     { country: "Tonga", capital: "Nuku'alofa", englishNames: ["Nukualofa"] },
-    { country: "Trinité-et-Tobago", capital: "Port d'Espagne", englishNames: ["Port of Spain"] },
+    { country: "Trinité-et-Tobago", capital: "Port d'Espagne", englishNames: ["Port of Spain", "Port d'Espagne"] },
     { country: "Tunisie", capital: "Tunis", englishNames: ["Tunis"] },
     { country: "Turkménistan", capital: "Achgabat", englishNames: ["Ashgabat"] },
     { country: "Turquie", capital: "Ankara", englishNames: ["Ankara"] },
@@ -406,6 +406,14 @@ function handleGuess() {
         return;
     }
 
+    // Désactiver les contrôles immédiatement pour éviter les double-clics
+    if (submitButton.disabled || passButton.disabled) return;
+    
+    capitalInput.disabled = true;
+    submitButton.disabled = true;
+    passButton.disabled = true;
+    capitalInput.blur(); // Fermer le clavier mobile
+
     if (isCorrectAnswer(guess, current)) {
         // Bonne réponse
         score++;
@@ -414,9 +422,6 @@ function handleGuess() {
 
         // Passer au pays suivant quasi immédiatement
         currentCountryIndex++;
-        capitalInput.disabled = true;
-        submitButton.disabled = true;
-        passButton.disabled = true;
         setTimeout(displayCurrentCountry, 100);
     } else {
         // Mauvaise réponse
@@ -425,9 +430,6 @@ function handleGuess() {
 
         // Passer au pays suivant après un délai plus long pour une mauvaise réponse
         currentCountryIndex++;
-        capitalInput.disabled = true;
-        submitButton.disabled = true;
-        passButton.disabled = true;
         setTimeout(displayCurrentCountry, 2500);
     }
 }
@@ -438,17 +440,22 @@ function handleGuess() {
 function handlePass() {
     if (gameState !== 'playing') return;
 
+    // Désactiver les contrôles immédiatement pour éviter les double-clics
+    if (submitButton.disabled || passButton.disabled) return;
+    
+    capitalInput.disabled = true;
+    submitButton.disabled = true;
+    passButton.disabled = true;
+    capitalInput.blur(); // Fermer le clavier mobile
+
     const current = shuffledCountries[currentCountryIndex];
     feedback.innerHTML = `<span class="text-red-400 font-bold text-lg">✗ Passé. La bonne réponse est : <span class="font-bold text-red-300">${current.capital}</span>.</span>`;
     registerPassedCountry('incorrect'); // Compte comme une mauvaise réponse
 
     // Passer au pays suivant
     currentCountryIndex++;
-    capitalInput.disabled = true;
-    submitButton.disabled = true;
-    passButton.disabled = true;
     setTimeout(displayCurrentCountry, 2500);
-}
+}}
 
 /**
  * Termine le quiz et affiche les résultats.
@@ -498,7 +505,9 @@ function startQuiz() {
 
 // Événements
 submitButton.addEventListener('click', handleGuess);
+submitButton.addEventListener('touchstart', handleGuess);
 passButton.addEventListener('click', handlePass);
+passButton.addEventListener('touchstart', handlePass);
 capitalInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         handleGuess();
