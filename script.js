@@ -490,14 +490,7 @@ function startQuiz() {
     feedback.textContent = '';
 
     // Préparation des pays
-    const countriesToTest = [
-        allCountriesAndCapitals.find(c => c.country === "Trinité-et-Tobago"),
-        allCountriesAndCapitals.find(c => c.country === "Antigua-et-Barbuda")
-    ];
-    const otherCountries = allCountriesAndCapitals.filter(c => 
-        c.country !== "Trinité-et-Tobago" && c.country !== "Antigua-et-Barbuda"
-    );
-    shuffledCountries = [...countriesToTest, ...shuffleArray(otherCountries)];
+    shuffledCountries = shuffleArray([...allCountriesAndCapitals]);
 
     // Affichage des éléments du jeu
     gameOverScreen.classList.add('hidden');
